@@ -1,5 +1,31 @@
-<?php require 'inc/data/products.php'; ?>
-<?php require 'inc/head.php'; ?>
+<?php
+session_start();
+if (!empty($_POST)) {
+    $_SESSION = array(
+        'loginname' => $_POST['loginname'],
+        'is_connected' => true
+    );
+};
+
+if(!empty($_GET["add_to_cart"])) {
+    $id=$_GET['add_to_cart'];
+    if(!isset($_SESSION["panier"])) { 
+        $_SESSION['panier']=[];
+    }
+    if(!isset($_SESSION["panier"][$id])){
+    $_SESSION['panier'][$id] = array(
+        'quantity' => 1
+    );
+    }else{
+        $_SESSION['panier'][$id]['quantity'] += 1;
+    }
+
+}
+
+require 'inc/data/products.php';
+require 'inc/head.php';
+?>
+
 <section class="cookies container-fluid">
     <div class="row">
         <?php foreach ($catalog as $id => $cookie) { ?>
